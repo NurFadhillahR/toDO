@@ -23,8 +23,8 @@ oauth = OAuth(app)
 def homePage():
     return render_template("home.html")
 
-app.config['SECRET_KEY'] = "123098"
-app.config['GOOGLE_CLIENT_ID'] = "269996139987-gp7j5mjjchkeh03dsvgvq5jjmdbumgg3.apps.googleusercontent.com" 
+app.config['SECRET_KEY'] = "enter your secret key"
+app.config['GOOGLE_CLIENT_ID'] = "enter your client ID" 
 client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "googleclient.json")  
 flow = Flow.from_client_secrets_file(  
     client_secrets_file=client_secrets_file,
