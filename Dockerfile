@@ -1,4 +1,4 @@
-FROM python:3
+FROM python: 3.10.4
 
 # set path to our python api file
 ENV MODULE_NAME="toDO"
