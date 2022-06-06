@@ -1,10 +1,5 @@
-FROM python: 3
-
-#set path to our python api file
-ENV MODULE_NAME="toDO"
-
-# copy contents of project into docker
-COPY ./ /app
-
-# install poetry
+FROM python:3
+ADD requirements.txt /
 RUN pip install -r requirements.txt
+ADD toDO.py /
+CMD [ "python", "./toDO.py" ]
