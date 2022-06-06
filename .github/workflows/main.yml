@@ -1,53 +1,20 @@
-name: Publish Docker Image
+name: Docker Image CI
 
 on:
   push:
-    branches: [ main ]
-  release:
-    types:
-      - published
-        
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
 jobs:
 
   build:
-    if: "!contains(github.event.head_commit.message, 'skip ci')"
-    runs-on: Python 3.10.4
-    
-    steps:
-      - name: Check out
-        uses: actions/checkout@v2
-        
-      - name: Docker meta
-        id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v1
-        with:
-          images: ghcr.io/NurFadhillahR/toDO
-          tag-sha: true
-          tag-edge: false
-          tag-latest: true
-          
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-        
-      - name: Login to GHCR
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.NurFadhillahR }}
-          password: ${{ secrets.PW_TODO }}
-          
-      - name: Build image
-        uses: docker/build-push-action@v2
-        with:
-          tags: ${{ steps.docker_meta.outputs.tags }} 
-          file: ./Dockerfile 
-          
-      - name: Push image
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          file: ./Dockerfile
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag nurfadhillahr/docker-image-autobuild:todo
+    - name: Push the Docker image
+      run: docker login -u nurfadhillahr -p ${{secrets.DOCKER_TOKEN}} && docker push nurfadhillahr/docker-image-autobuild:todo
